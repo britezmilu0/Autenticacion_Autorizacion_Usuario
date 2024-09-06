@@ -44,6 +44,28 @@ export const logoutCtrl =  (req, res) => {
     });
 }
 
+export const authRegister = async(req, res) => {
+    const { username, password } = req.body;
+    const connection = await connectDb();
+    try {
+        // Verificar si el nombre de usuario ya está en uso
+    const [user] = await connection.query('SELECT * FROM users WHERE USERNAME=?', [username]);
+    if (user.length > 0) {
+        return res.status(400).json({ message: 'El nombre de usuario ya está en uso' });
+    }
+    // Crear un nuevo usuario en la base de datos
+    await connection.query('INSERT INTO users (username, password) VALUES (?,?)', [username, password]);
+    return res.json({ message: 'Registro exitoso' });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Error Inesperado' });
+    }
+    
+
+    
+}
+
+
 //ejemplo para ver si funcionaba la base de datos 
 // export const getUsers = async (req, res) => {
 
