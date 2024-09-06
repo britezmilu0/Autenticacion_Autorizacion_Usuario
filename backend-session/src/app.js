@@ -6,9 +6,11 @@ import morgan from 'morgan';
 import path from 'path';
 import { authRouter } from './routes/auth.routes.js';
 import { connectDb } from '../db/database.js';
+import { config } from './config/config.js';
 
 const app = express();
-const PORT = process.env.PORT || 4000;
+const PORT = config.PORT
+
 
 const __dirname = path.resolve();
 
